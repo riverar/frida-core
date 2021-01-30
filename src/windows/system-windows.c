@@ -1,7 +1,6 @@
 #include "frida-core.h"
-
 #include "icon-helpers.h"
-
+#include "access-helpers.h"
 #include <psapi.h>
 
 #define DRIVE_STRINGS_MAX_LENGTH     (512)
@@ -49,9 +48,11 @@ frida_system_enumerate_processes (int * result_length)
 
   for (i = 0; i != bytes_returned / sizeof (DWORD); i++)
   {
+    DWORD desired_access;
     HANDLE handle;
 
-    handle = OpenProcess (PROCESS_QUERY_INFORMATION, FALSE, pids[i]);
+    desired_access = frida_access_is_windows_vista_or_greater () ? PROCESS_QUERY_LIMITED_INFORMATION : PROCESS_QUERY_INFORMATION;
+    handle = OpenProcess (desired_access, FALSE, pids[i]);
     if (handle != NULL)
     {
       WCHAR name_utf16[MAX_PATH];

@@ -1,6 +1,5 @@
 #include "access-helpers.h"
 
-static BOOL frida_access_is_windows_vista_or_greater (void);
 static BOOL frida_access_is_windows_8_or_greater (void);
 static BOOL frida_access_is_windows_version_or_greater (DWORD major, DWORD minor, DWORD service_pack);
 
@@ -20,7 +19,7 @@ frida_access_get_sddl_string_for_temp_directory (void)
   }
 }
 
-static BOOL
+BOOL
 frida_access_is_windows_vista_or_greater (void)
 {
   return frida_access_is_windows_version_or_greater (6, 0, 0);
